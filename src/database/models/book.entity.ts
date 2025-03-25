@@ -1,6 +1,16 @@
-import { Column, DataType, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  Model,
+  PrimaryKey,
+  Table,
+} from 'sequelize-typescript';
 
-export type BookStatus = 'Reading' | 'Completed' | 'Want to read' | 'Want to buy';
+export type BookStatus =
+  | 'Reading'
+  | 'Completed'
+  | 'Want to read'
+  | 'Want to buy';
 
 export const BookStatusEnum: Record<string, BookStatus> = {
   READING: 'Reading',
@@ -41,7 +51,11 @@ export class BookEntity extends Model<BookEntity, BookCreationAttributes> {
   @Column({ allowNull: true })
   image?: string;
 
-  @Column({ type: DataType.ENUM(...Object.values(BookStatusEnum)), unique: false, allowNull: false })
+  @Column({
+    type: DataType.ENUM(...Object.values(BookStatusEnum)),
+    unique: false,
+    allowNull: false,
+  })
   status!: BookStatus;
 
   @Column({ allowNull: false, defaultValue: 0 })
