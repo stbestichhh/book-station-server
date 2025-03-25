@@ -30,4 +30,4 @@ async function bootstrap() {
     logger.log(`Service is running on http://${HOST}:${PORT}`);
   });
 }
-bootstrap();
+void bootstrap();
