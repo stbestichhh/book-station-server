@@ -4,7 +4,8 @@ import { AppService } from './app.service';
 import { LoggerModule } from 'nestjs-pino';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
-import { BookEntity, DatabaseFactoryModule } from './database';
+import { DatabaseFactoryModule } from './database';
+import { BookModule } from './book/book.module';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { BookEntity, DatabaseFactoryModule } from './database';
       },
     }),
     DatabaseFactoryModule.forRoot(),
-    DatabaseFactoryModule.forFeature([BookEntity]),
+    BookModule,
   ],
   controllers: [AppController],
   providers: [AppService],
