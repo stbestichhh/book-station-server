@@ -11,7 +11,6 @@ import {
   ModelAttributes,
   WhereOptions,
 } from 'sequelize';
-import { v7 as uuidv7 } from 'uuid';
 
 export abstract class AbstractRepository<T extends Model>
   implements IRepository<T>
@@ -23,7 +22,6 @@ export abstract class AbstractRepository<T extends Model>
   public async create(attributes: CreationAttributes<T>): Promise<T> {
     return this.catchable<T>(() =>
       this.model.create({
-        id: uuidv7(),
         ...attributes,
       }),
     );
