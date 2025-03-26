@@ -12,7 +12,7 @@ export type BookStatus =
   | 'Want to read'
   | 'Want to buy';
 
-export const BookStatusEnum: Record<string, BookStatus> = {
+export const BookStatusEnum = {
   READING: 'Reading',
   COMPLETED: 'Completed',
   WANT_TO_READ: 'Want to read',
@@ -23,11 +23,11 @@ export interface BookCreationAttributes {
   title: string;
   author: string;
   pages: number;
-  description: string;
-  image: string;
-  status: BookStatus;
-  pagesRead: number;
-  minutesSpent: number;
+  description?: string;
+  image?: string;
+  status?: BookStatus;
+  pagesRead?: number;
+  minutesSpent?: number;
 }
 
 @Table({ tableName: 'books' })
@@ -53,14 +53,14 @@ export class BookEntity extends Model<BookEntity, BookCreationAttributes> {
 
   @Column({
     type: DataType.ENUM(...Object.values(BookStatusEnum)),
-    unique: false,
     allowNull: false,
+    defaultValue: BookStatusEnum.WANT_TO_READ,
   })
   status!: BookStatus;
 
   @Column({ allowNull: false, defaultValue: 0 })
-  pagesRead: number = 0;
+  pagesRead?: number;
 
   @Column({ allowNull: false, defaultValue: 0 })
-  minutesSpent: number = 0;
+  minutesSpent?: number;
 }

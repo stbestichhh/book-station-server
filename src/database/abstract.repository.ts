@@ -5,12 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { IRepository } from './repository.interface';
-import {
-  BaseError,
-  CreationAttributes,
-  ModelAttributes,
-  WhereOptions,
-} from 'sequelize';
+import { BaseError, CreationAttributes, WhereOptions } from 'sequelize';
 
 export abstract class AbstractRepository<T extends Model>
   implements IRepository<T>
@@ -66,7 +61,7 @@ export abstract class AbstractRepository<T extends Model>
 
   public async update(
     primaryKey: string | number,
-    options: Partial<ModelAttributes<T>>,
+    options: Partial<CreationAttributes<T>>,
   ): Promise<T> {
     const entity = await this.findByPk(primaryKey);
     return this.catchable<T>(() => entity.set(options).save());
