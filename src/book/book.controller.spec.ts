@@ -1,27 +1,31 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { BookController } from './book.controller';
 import { BookService } from './book.service';
+import { BookRepository } from './book.repository';
 import { SqliteMockModule } from '../database/sqlite.module.mock';
 import { BookEntity } from '../database';
-import { BookRepository } from './book.repository';
 import { CreateBookDto } from './dto';
 
-describe('BookService', () => {
-  let service: BookService;
+describe('AppController', () => {
+  let bookController: BookController;
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    const bookModule: TestingModule = await Test.createTestingModule({
       imports: [SqliteMockModule, SqliteMockModule.forFeature([BookEntity])],
+      controllers: [BookController],
       providers: [BookService, BookRepository],
     }).compile();
 
-    service = module.get<BookService>(BookService);
+    bookController = bookModule.get<BookController>(BookController);
   });
 
-  it('Should be defined', () => {
-    expect(service).toBeDefined();
+  describe('Book controller', () => {
+    it('Should be defined!"', () => {
+      expect(bookController).toBeDefined();
+    });
   });
 
-  describe('create Books', () => {
+  describe('Create books', () => {
     it('Should create book with not all attributes', async () => {
       const bookData: CreateBookDto = {
         title: 'First Book',
@@ -29,7 +33,7 @@ describe('BookService', () => {
         pages: 100,
       };
 
-      const book = await service.create(bookData);
+      const book = await bookController.createNewBook(bookData);
       expect(book).toMatchObject(bookData);
     });
 
@@ -45,14 +49,25 @@ describe('BookService', () => {
         status: 'Reading',
       };
 
-      const book = await service.create(bookData);
+      const book = await bookController.createNewBook(bookData);
       expect(book).toMatchObject(bookData);
+    });
+
+    it('Should throw if not enough data in body', async () => {
+      const bookData = {
+        author: 'Some Author',
+      };
+
+      await expect(async () => {
+        return await bookController.createNewBook(bookData as CreateBookDto);
+      }).rejects.toThrow();
     });
   });
 
-  describe('get book', () => {
+  describe('Get book', () => {
     it('get book by id', async () => {
-      const book = await service.getOneById(1);
+      const book = await bookController.getOneBookById(1);
+
       expect(book).toMatchObject({
         title: 'First Book',
         author: 'Fist Author',
@@ -61,16 +76,20 @@ describe('BookService', () => {
     });
 
     it('Should throw on wrong id', async () => {
-      await expect(async () => await service.getOneById(100)).rejects.toThrow();
+      await expect(
+        async () => await bookController.getOneBookById(100),
+      ).rejects.toThrow();
     });
 
     it('Should get all books', async () => {
-      const books = await service.getAll();
+      const books = await bookController.getAllBooks();
       expect(books).toHaveLength(2);
     });
 
     it('Should get all books by props', async () => {
-      const secondBook = await service.getAll({ title: 'Second Book' });
+      const secondBook = await bookController.getAllBooks({
+        title: 'Second Book',
+      });
       expect(secondBook).toHaveLength(1);
       expect(secondBook[0]).toMatchObject({
         author: 'Second Author',
@@ -82,17 +101,17 @@ describe('BookService', () => {
   describe('Update book', () => {
     it('Should throw on wrong id', async () => {
       await expect(async () =>
-        service.updateById(100, { pages: 100 }),
+        bookController.updateBookByID(100, { pages: 100 }),
       ).rejects.toThrow();
     });
 
     it('Should leave book with no updates', async () => {
-      const book = await service.updateById(1, {});
+      const book = await bookController.updateBookByID(1, {});
       expect(book).toMatchObject({ pages: 100 });
     });
 
     it('Should update book', async () => {
-      const book = await service.updateById(1, { pagesRead: 150 });
+      const book = await bookController.updateBookByID(1, { pagesRead: 150 });
       expect(book).not.toMatchObject({ pagesRead: 0 });
       expect(book).toMatchObject({ pagesRead: 150 });
     });
@@ -100,14 +119,18 @@ describe('BookService', () => {
 
   describe('Delete book', () => {
     it('Should throw on wrong id', async () => {
-      await expect(async () => service.deleteById(100)).rejects.toThrow();
+      await expect(async () =>
+        bookController.deleteBookById(100),
+      ).rejects.toThrow();
     });
 
     it('Should delete book', async () => {
-      await service.deleteById(1);
-      const books = await service.getAll();
+      await bookController.deleteBookById(1);
+      const books = await bookController.getAllBooks();
 
-      await expect(async () => await service.getOneById(1)).rejects.toThrow();
+      await expect(
+        async () => await bookController.deleteBookById(1),
+      ).rejects.toThrow();
       expect(books).toHaveLength(1);
     });
   });

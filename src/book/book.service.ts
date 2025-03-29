@@ -8,23 +8,23 @@ import { CreateBookDto, UpdateBookDto } from './dto';
 export class BookService {
   constructor(private readonly bookRepository: BookRepository) {}
 
-  public async getOneById(id: number) {
-    return await this.bookRepository.findByPk(id);
+  public getOneById(id: number) {
+    return this.bookRepository.findByPk(id);
   }
 
-  public async getAll(options?: WhereOptions<BookEntity>) {
-    return await this.bookRepository.findAll(options);
+  public getAll(options?: WhereOptions<BookEntity>) {
+    return this.bookRepository.findAll(options);
   }
 
-  public async create(dto: CreateBookDto) {
-    return await this.bookRepository.create(dto);
+  public create(dto: CreateBookDto) {
+    return this.bookRepository.create(dto);
   }
 
-  public async updateById(id: number, dto: UpdateBookDto) {
-    return await this.bookRepository.update(id, dto);
+  public updateById(id: number, dto: UpdateBookDto) {
+    return this.bookRepository.update(id, dto);
   }
 
-  public async deleteById(id: number) {
-    return await this.bookRepository.delete(id);
+  public deleteById(id: number) {
+    return this.bookRepository.delete(id);
   }
 }
