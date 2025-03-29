@@ -16,7 +16,13 @@ describe('AppController', () => {
       providers: [BookService, BookRepository],
     }).compile();
 
+    await BookEntity.sync({ force: true });
+
     bookController = bookModule.get<BookController>(BookController);
+  });
+
+  afterAll(async () => {
+    await BookEntity.drop();
   });
 
   describe('Book controller', () => {

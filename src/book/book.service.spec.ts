@@ -14,7 +14,13 @@ describe('BookService', () => {
       providers: [BookService, BookRepository],
     }).compile();
 
+    await BookEntity.sync({ force: true });
+
     service = module.get<BookService>(BookService);
+  });
+
+  afterAll(async () => {
+    await BookEntity.drop();
   });
 
   it('Should be defined', () => {
