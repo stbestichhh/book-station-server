@@ -28,6 +28,7 @@ export interface BookCreationAttributes {
   status?: BookStatus;
   pagesRead?: number;
   minutesSpent?: number;
+  yearFinished?: number;
 }
 
 @Table({ tableName: 'books' })
@@ -63,4 +64,7 @@ export class BookEntity extends Model<BookEntity, BookCreationAttributes> {
 
   @Column({ allowNull: false, defaultValue: 0 })
   minutesSpent?: number;
+
+  @Column({ allowNull: true })
+  yearFinished?: number;
 }
