@@ -29,7 +29,6 @@ export class CreateBookDto implements BookCreationAttributes {
   @IsOptional()
   description?: string | undefined;
 
-  @IsUrl()
   @IsOptional()
   image?: string | undefined;
 
