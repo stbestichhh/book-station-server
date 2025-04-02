@@ -1,11 +1,17 @@
 import { Model, ModelCtor } from 'sequelize-typescript';
 import {
+  ForbiddenException,
   InternalServerErrorException,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { IRepository } from './repository.interface';
-import { BaseError, CreationAttributes, WhereOptions } from 'sequelize';
+import {
+  BaseError,
+  CreationAttributes,
+  ValidationError,
+  WhereOptions,
+} from 'sequelize';
 
 export abstract class AbstractRepository<T extends Model>
   implements IRepository<T>
@@ -76,7 +82,14 @@ export abstract class AbstractRepository<T extends Model>
     try {
       return await callback();
     } catch (e) {
-      this.logger.error(e instanceof Error ? e.message : e);
+      this.logger.error(e);
+
+      if (e instanceof ValidationError) {
+        throw new ForbiddenException(`Sequelize error`, {
+          description: 'Entity already exists in database',
+          cause: e.message,
+        });
+      }
 
       if (e instanceof BaseError) {
         throw new InternalServerErrorException(`Sequelize error`, {

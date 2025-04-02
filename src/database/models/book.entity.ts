@@ -37,7 +37,7 @@ export class BookEntity extends Model<BookEntity, BookCreationAttributes> {
   @Column({ unique: true, allowNull: false, autoIncrement: true })
   id!: number;
 
-  @Column({ allowNull: false })
+  @Column({ unique: true, allowNull: false })
   title!: string;
 
   @Column({ allowNull: false })
@@ -46,7 +46,7 @@ export class BookEntity extends Model<BookEntity, BookCreationAttributes> {
   @Column({ allowNull: false })
   pages!: number;
 
-  @Column({ unique: true, allowNull: true })
+  @Column({ allowNull: true })
   description?: string;
 
   @Column({ allowNull: true })
