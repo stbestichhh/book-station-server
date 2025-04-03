@@ -7,7 +7,6 @@ import * as Joi from 'joi';
 import { JwtStrategy, LocalStrategy } from './strategies';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { UsersService } from './users/users.service';
 
 @Module({
   imports: [
