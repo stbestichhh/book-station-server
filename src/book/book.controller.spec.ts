@@ -5,13 +5,18 @@ import { BookRepository } from './book.repository';
 import { SqliteMockModule } from '../database/sqlite.module.mock';
 import { BookEntity } from '../database';
 import { CreateBookDto } from './dto';
+import { ThrottlerModule } from '@nestjs/throttler';
 
-describe('AppController', () => {
+describe('BookController', () => {
   let bookController: BookController;
 
   beforeAll(async () => {
     const bookModule: TestingModule = await Test.createTestingModule({
-      imports: [SqliteMockModule, SqliteMockModule.forFeature([BookEntity])],
+      imports: [
+        SqliteMockModule,
+        SqliteMockModule.forFeature([BookEntity]),
+        ThrottlerModule.forRoot(),
+      ],
       controllers: [BookController],
       providers: [BookService, BookRepository],
     }).compile();

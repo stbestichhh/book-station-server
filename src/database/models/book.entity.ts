@@ -1,10 +1,13 @@
 import {
+  BelongsTo,
   Column,
   DataType,
+  ForeignKey,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
+import { UserEntity } from './user.entity';
 
 export type BookStatus =
   | 'Reading'
@@ -29,6 +32,7 @@ export interface BookCreationAttributes {
   pagesRead?: number;
   minutesSpent?: number;
   yearFinished?: number;
+  userId: string;
 }
 
 @Table({ tableName: 'books' })
@@ -67,4 +71,11 @@ export class BookEntity extends Model<BookEntity, BookCreationAttributes> {
 
   @Column({ allowNull: true })
   yearFinished?: number;
+
+  @ForeignKey(() => UserEntity)
+  @Column({ allowNull: false })
+  userId!: string;
+
+  @BelongsTo(() => UserEntity)
+  user!: UserEntity;
 }

@@ -43,4 +43,6 @@ export class CreateBookDto implements BookCreationAttributes {
   @IsNumber()
   @IsOptional()
   minutesSpent?: number | undefined;
+
+  userId!: string;
 }

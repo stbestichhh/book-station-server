@@ -2,7 +2,7 @@ import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { BookEntity } from './models';
+import { BookEntity, UserEntity } from './models';
 
 @Module({
   imports: [
@@ -14,7 +14,7 @@ import { BookEntity } from './models';
         username: config.getOrThrow<string>('POSTGRES_USER'),
         password: config.getOrThrow<string>('POSTGRES_PASSWORD'),
         database: config.getOrThrow<string>('POSTGRES_DB'),
-        models: [BookEntity],
+        models: [BookEntity, UserEntity],
         autoLoadModels: true,
         sync: { alter: true, force: false },
         logging: (msg) => Logger.log(msg, PostgresModule.name),

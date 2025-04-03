@@ -1,6 +1,6 @@
 import { Logger, Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { BookEntity } from './models';
+import { BookEntity, UserEntity } from './models';
 
 @Module({
   imports: [
@@ -8,7 +8,7 @@ import { BookEntity } from './models';
       useFactory: () => ({
         dialect: 'sqlite',
         storage: '.db/data.test.sqlite',
-        models: [BookEntity],
+        models: [BookEntity, UserEntity],
         autoLoadModels: true,
         sync: { alter: true, force: true },
         logging: (msg) => Logger.log(msg, SqliteMockModule.name),

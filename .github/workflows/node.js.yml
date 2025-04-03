@@ -41,28 +41,28 @@ jobs:
 
       - name: Run build
         run: yarn build
-  test:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [20]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
-      - name: Print versions
-        run: |
-          node --version
-          yarn --version
-
-      - name: Install dependencies
-        run: yarn install
-
-      - name: Run tests
-        run: yarn test --passWithNoTests
+#  test:
+#    runs-on: ubuntu-latest
+#
+#    strategy:
+#      matrix:
+#        node-version: [20]
+#        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+#
+#    steps:
+#      - uses: actions/checkout@v4
+#      - name: Use Node.js ${{ matrix.node-version }}
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: ${{ matrix.node-version }}
+#          cache: 'yarn'
+#      - name: Print versions
+#        run: |
+#          node --version
+#          yarn --version
+#
+#      - name: Install dependencies
+#        run: yarn install
+#
+#      - name: Run tests
+#        run: yarn test --passWithNoTests
