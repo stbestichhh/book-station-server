@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { JwtGuard } from '../guards';
 import { UsersService } from './users.service';
@@ -18,7 +18,7 @@ export class CurrentUserController {
   @Patch()
   public async updateCurrentUser(
     @CurrentUser('sub') userId: string,
-    dto: UpdateUserDto,
+    @Body() dto: UpdateUserDto,
   ) {
     return this.userService.updateUser(userId, dto);
   }
